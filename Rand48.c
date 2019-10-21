@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 unsigned long long next(unsigned long long a, 
 unsigned long long xn, unsigned long long c, unsigned long long m){
     return (a*xn+c)%m;
