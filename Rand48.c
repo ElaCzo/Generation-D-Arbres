@@ -19,8 +19,7 @@ unsigned long long x0, unsigned long long c, unsigned long long m){
     return res;
 }
 
-unsigned long long* rand48(int nombre, unsigned long long a, 
-unsigned long long x0, unsigned long long c){
+unsigned long long* rand48(int nombre, unsigned long long x0){
     return generateur(nombre, 25214903917, x0, 11, (1<<48));
 }
 
@@ -29,6 +28,14 @@ void affiche(unsigned long long* entiers, int nombre){
     for(i=0; i<nombre; i++){
         printf("%llu", entiers[i]);
     }
+}
+
+// On désire une graine > 2^40
+unsigned long long* initialisation_generateur(int nombre, unsigned long long graine){
+    if(graine > (1<<40))
+        return rand48(nombre, graine);
+    else
+        return rand48(nombre, graine+(1<<40));
 }
 
 int main(){
