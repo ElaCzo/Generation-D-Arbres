@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+int Xn = 0;
+int cpt = 0;
+unsigned long long rand = 123456789;
 
 unsigned long long next(unsigned long long a, 
 unsigned long long xn, unsigned long long c, unsigned long long m){
@@ -36,6 +39,20 @@ unsigned long long* initialisation_generateur(int nombre, unsigned long long gra
         return rand48(nombre, graine);
     else
         return rand48(nombre, graine+(1<<40));
+}
+
+char bit_suivant(){
+    if(cpt == 48){
+        cpt = 0;
+        Xn=initialisation_generateur(1, rand);
+        rand=Xn;
+    }
+
+    char res = (Xn&1);
+    Xn >>= 1;
+
+    cpt++;
+    return res;
 }
 
 int main(){
