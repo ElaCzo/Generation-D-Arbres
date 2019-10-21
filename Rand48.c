@@ -41,10 +41,18 @@ unsigned long long* initialisation_generateur(int nombre, unsigned long long gra
         return rand48(nombre, graine+(1<<40));
 }
 
+// On ne veut générer qu'un seule nombre.
+unsigned long long init_gen_1(unsigned long long graine){
+    unsigned long long *gen = initialisation_generateur(1, graine);
+    unsigned long long res = *gen;
+    free(gen);
+    return res;
+}
+
 char bit_suivant(){
     if(cpt == 48){
         cpt = 0;
-        Xn=initialisation_generateur(1, rand);
+        Xn=init_gen(rand);
         rand=Xn;
     }
 
@@ -53,6 +61,24 @@ char bit_suivant(){
 
     cpt++;
     return res;
+}
+
+/**************ALEA BOUNDED**************/
+
+unsigned long long Xn_bounded = 123456789;
+
+// fonction générant uniformément un entier entre 0 et n
+char rand48_bounded(int n){
+    Xn_bounded = init_gen_1(Xn_bounded);
+    
+    unsigned long long res = Xn_bounded;
+    if(res>n){
+        int log2n = log2(n);
+        // méthode de rejet
+        res = ((res<<log2n)>>log2n);
+    }
+
+    return res; 
 }
 
 int main(){
